@@ -1,0 +1,27 @@
+# `{{ data_source_name }}`
+
+{{ data_source.description }}
+
+## Example Usage
+
+```hcl
+# TODO: Add example usage
+```
+
+## Argument Reference
+
+The following arguments are supported:
+
+{% for name, attr in data_source.type.attributes.items() %}
+* `{{ name }}` - ({{ "Required" if attr.required else "Optional" }}) {{ attr.description }}
+{% endfor %}
+
+## Attributes Reference
+
+In addition to all arguments above, the following attributes are exported:
+
+{% for name, attr in data_source.type.attributes.items() %}
+{% if attr.computed %}
+* `{{ name }}` - {{ attr.description }}
+{% endif %}
+{% endfor %}

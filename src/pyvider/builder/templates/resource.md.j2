@@ -1,0 +1,29 @@
+# `{{ resource_name }}`
+
+{{ docs.get(f"10-tutorial-file-content.02-the-file-content-resource", "") }}
+
+## Example Usage
+
+```hcl
+{{ docs.get(f"10-tutorial-file-content.02-the-file-content-resource", "") }}
+```
+
+## Schema
+
+### Required
+
+{% for name, attr in resource.attributes.items() if attr.required %}
+* `{{ name }}` ({{ attr.type }}) {% if attr.description %}{{ attr.description }}{% endif %}
+{% endfor %}
+
+### Optional
+
+{% for name, attr in resource.attributes.items() if not attr.required %}
+* `{{ name }}` ({{ attr.type }}) {% if attr.description %}{{ attr.description }}{% endif %}
+{% endfor %}
+
+### Read-Only
+
+{% for name, attr in resource.attributes.items() if attr.computed %}
+* `{{ name }}` ({{ attr.type }}) {% if attr.description %}{{ attr.description }}{% endif %}
+{% endfor %}

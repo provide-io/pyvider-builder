@@ -1,0 +1,17 @@
+# {{ provider.name }} Provider
+
+{{ provider.description }}
+
+## Example Usage
+
+```hcl
+provider "{{ provider.name }}" {
+  # ...
+}
+```
+
+## Argument Reference
+
+{% for name, attr in provider.schema.items() %}
+* `{{ name }}` - ({{ "Required" if attr.required else "Optional" }}) {{ attr.description }}
+{% endfor %}

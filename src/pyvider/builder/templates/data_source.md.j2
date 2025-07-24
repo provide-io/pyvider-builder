@@ -1,0 +1,29 @@
+# `{{ data_source_name }}`
+
+{{ docs.get(f"09-tutorial-http-api.02-the-http-api-data-source", "") }}
+
+## Example Usage
+
+```hcl
+{{ docs.get(f"09-tutorial-http-api.03-testing-the-http-api-data-source", "") }}
+```
+
+## Schema
+
+### Required
+
+{% for name, attr in data_source.type.attribute_types.items() if name not in data_source.type.optional_attributes %}
+* `{{ name }}` ({{ attr.type }}) {% if attr.description %}{{ attr.description }}{% endif %}
+{% endfor %}
+
+### Optional
+
+{% for name, attr in data_source.type.attribute_types.items() if name in data_source.type.optional_attributes %}
+* `{{ name }}` ({{ attr.type }}) {% if attr.description %}{{ attr.description }}{% endif %}
+{% endfor %}
+
+### Read-Only
+
+{% for name, attr in data_source.type.attribute_types.items() if attr.computed %}
+* `{{ name }}` ({{ attr.type }}) {% if attr.description %}{{ attr.description }}{% endif %}
+{% endfor %}

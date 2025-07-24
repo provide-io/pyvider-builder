@@ -1,0 +1,21 @@
+# `{{ function_name }}`
+
+{{ docs.get(f"08-tutorial.02-the-jq-function", "") }}
+
+## Example Usage
+
+```hcl
+{{ docs.get(f"08-tutorial.04-testing-the-jq-components", "") }}
+```
+
+## Schema
+
+### Parameters
+
+{% for name, attr in function.parameters.items() %}
+* `{{ name }}` ({{ attr.type }}) {% if attr.description %}{{ attr.description }}{% endif %}
+{% endfor %}
+
+### Return Value
+
+* ({{ function.return_type }}) {% if function.return_type.description %}{{ function.return_type.description }}{% endif %}

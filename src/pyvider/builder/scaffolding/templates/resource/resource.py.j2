@@ -1,0 +1,90 @@
+"""
+Scaffolded Pyvider Resource: {{ component_name }}
+"""
+from typing import Any
+import attrs
+from pyvider.hub import register_resource
+from pyvider.resources.base import BaseResource
+from pyvider.resources.context import ResourceContext
+from pyvider.schema import PvsSchema, a_str, s_resource
+from pyvider.telemetry import logger
+
+# Define an attrs class for this resource's configuration.
+@attrs.define(frozen=True)
+class {{ component_name | capitalize }}Config:
+    example_attribute: str = attrs.field()
+
+# Define an attrs class for this resource's state.
+@attrs.define(frozen=True)
+class {{ component_name | capitalize }}State:
+    id: str = attrs.field()
+    example_attribute: str = attrs.field()
+
+@register_resource("{{ provider_name }}_{{ component_name | lower }}")
+class {{ component_name | capitalize }}Resource(
+    BaseResource[
+        "{{ provider_name }}_{{ component_name | lower }}",
+        {{ component_name | capitalize }}State,
+        {{ component_name | capitalize }}Config
+    ]
+):
+    """Manages the {{ component_name }} resource."""
+    
+    config_class = {{ component_name | capitalize }}Config
+    state_class = {{ component_name | capitalize }}State
+
+    @classmethod
+    def get_schema(cls) -> PvsSchema:
+        """Defines the schema for the {{ component_name }} resource."""
+        return s_resource({
+            "id": a_str(computed=True, description="Unique identifier for the resource."),
+            "example_attribute": a_str(
+                required=True, 
+                description="An example configurable attribute."
+            ),
+        })
+
+    async def read(self, ctx: ResourceContext) -> {{ component_name | capitalize }}State | None:
+        """Reads the current state of the resource from the real world."""
+        logger.info(f"Reading resource {ctx.state.id if ctx.state else 'new'}")
+        
+        # TODO: Implement logic to fetch the resource's state.
+        # If the resource exists, return its state as a State object.
+        # If the resource does not exist, return None.
+        if ctx.state:
+            return ctx.state
+        return None
+
+    async def plan(self, ctx: ResourceContext) -> tuple[{{ component_name | capitalize }}State | None, None]:
+        """Calculates the planned state of the resource."""
+        logger.info("Planning resource changes for {{ component_name }}")
+        
+        # If there is no prior state, we are creating a new resource.
+        # We must predict the value of all computed attributes.
+        resource_id = ctx.state.id if ctx.state else f"res-{{ component_name | lower }}-{id(ctx)}[:8]"
+        
+        planned_state = self.state_class(
+            id=resource_id,
+            example_attribute=ctx.config.example_attribute,
+        )
+        
+        return planned_state, None
+
+    async def apply(self, ctx: ResourceContext) -> tuple[{{ component_name | capitalize }}State | None, None]:
+        """Creates or updates the resource to match the planned state."""
+        logger.info("Applying resource changes for {{ component_name }}")
+        
+        # TODO: Implement the logic to create or update the resource.
+        # This method should be idempotent.
+        
+        # The state returned here MUST be identical to ctx.planned_state.
+        # The framework will verify this contract.
+        return ctx.planned_state, None
+
+    async def delete(self, ctx: ResourceContext) -> None:
+        """Deletes the resource."""
+        logger.info(f"Deleting resource {ctx.state.id if ctx.state else 'unknown'}")
+        
+        # TODO: Implement the logic to delete the resource.
+        # This method should be idempotent.
+        pass

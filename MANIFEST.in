@@ -1,0 +1,2 @@
+# Include the Go source directory, which is now inside our package.
+recursive-include src/pyvider/builder/go *

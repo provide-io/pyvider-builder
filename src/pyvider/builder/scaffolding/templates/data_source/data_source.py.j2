@@ -1,0 +1,22 @@
+"""
+Data source for {{ component_name }}
+"""
+
+from pyvider.data_sources.base import BaseDataSource
+from pyvider.hub import register_data_source
+
+
+@register_data_source("{{ provider_name }}_{{ component_name }}")
+class {{ component_class_name }}DataSource(BaseDataSource):
+    """
+    This is a sample data source.
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def get_schema(self):
+        return {}
+
+    def read(self, state, config):
+        return {}

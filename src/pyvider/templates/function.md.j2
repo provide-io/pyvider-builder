@@ -1,0 +1,21 @@
+# `{{ function_name }}`
+
+{{ function.description }}
+
+## Example Usage
+
+```hcl
+# TODO: Add example usage
+```
+
+## Signature
+
+```
+{{ function_name }}({% for name, attr in function.type.parameters.items() %}{{ name }}{{ ", " if not loop.last }}{% endfor %}) -> {{ function.type.return_type }}
+```
+
+## Arguments
+
+{% for name, attr in function.type.parameters.items() %}
+* `{{ name }}` - ({{ "Required" if attr.required else "Optional" }}) {{ attr.description }}
+{% endfor %}

@@ -1,0 +1,50 @@
+# pyproject.toml for terraform-provider-{{ provider_name }}
+
+[project]
+name = "terraform-provider-{{ provider_name }}"
+version = "0.1.0"
+description = "A Terraform provider for {{ provider_name }}, built with Pyvider."
+requires-python = ">=3.13"
+dependencies = [
+    "pyvider>=0.0.711", # Adjust to the version of Pyvider you are targeting
+]
+
+# This script name becomes the final executable name for PEP 517 builds.
+[project.scripts]
+"terraform-provider-{{ provider_name }}" = "{{ provider_name }}.main:serve"
+
+[build-system]
+requires = ["pyvider-builder>=0.0.711"] # Requires pyvider-builder for packaging
+build-backend = "pyvider.builder.build_backend"
+
+# ---------------------------------------------------------------------------- #
+# Pyvider Builder Configuration
+# ---------------------------------------------------------------------------- #
+[tool.pyvider]
+# The final name of the packaged provider binary.
+output_path = "dist/terraform-provider-{{ provider_name }}"
+
+# The Python entry point for the provider's runtime.
+entry_point = "{{ provider_name }}.main:serve"
+
+# The Python version to embed in the final binary.
+python_version = "3.13"
+
+[tool.pyvider.build]
+# A list of local directories and PyPI packages to include in the build.
+dependencies = [
+    "./src/{{ provider_name }}",
+    # "attrs>=23.1.0",
+]
+
+# Glob patterns for files/directories to exclude from the package.
+exclude = [
+    "**/.terraform/**",
+    "**/.venv/**",
+    "**/__pycache__/**",
+]
+
+[tool.pyvider.signing]
+# Paths are relative to this pyproject.toml file.
+private_key_path = "keys/provider-private.key"
+public_key_path = "keys/provider-public.key"
